@@ -10,6 +10,14 @@ function customSet(arr) {
   // Для кожного елемента перевіряємо, чи є цей елемент числом за допомогою оператора typeof
   // Якщо елемент є числом, то видаляємо його з множини за допомогою метода delete
   // Повертаємо нову множину, яка вже не містить числових значень
+  let set = new Set(arr);
+  for (let item of set) {
+    if (typeof item === 'number') {
+      set.delete(item);
+    }
+  }
+
+  return set;
 }
 // Приклад використання функції customSet
 console.log("Завдання: 1 ==============================");
@@ -25,6 +33,13 @@ function clearSet(set) {
   // Використання властивості size для перевірки розміру множини, чи більше вона нуля
   // Якщо так використання методу clear для очищення множини та повертаємо Множину очищено.
   // Якщо ні повертаємо Множина вже порожня.
+  if (set.size > 0) {
+    set.clear();
+    return `Множину очищено`;
+  }
+  else {
+    return `Множина вже порожня`;
+  }
 }
 
 // Приклад використання функції clearSet
@@ -45,6 +60,11 @@ function addElements(mySet, arr) {
   // Перебираємо масив та додаємо кожний елемент до множини за допомогою методу add
   // Метод add додає елемент до множини лише якщо він ще не присутній у множині
   // Повертаємо оновлену множину
+  for (let item of arr) {
+    mySet.add(item);
+  }
+
+  return mySet;
 }
 
 // Приклад використання функції addElements
@@ -68,6 +88,18 @@ function filterAndAdd(mySet, arr) {
   // Тепер множина не містить числових значень. Перебираємо масив та додаємо кожний елемент до множини
   // за допомогою методу add. Метод add додає елемент до множини лише якщо він ще не присутній у множині.
   // Повертаємо оновлену множину
+  for (let item of mySet) {
+    if (typeof item === 'number') {
+      mySet.delete(item);
+    }
+  }
+
+  // return addElements(mySet, arr);
+  for (let item of arr) {
+    mySet.add(item);
+  }
+
+  return mySet;
 }
 
 // Приклад використання функції filterAndAdd
@@ -89,6 +121,12 @@ function checkValueAndType(mySet, value) {
   // Використовуємо метод has для перевірки, чи містить множина певне значення.
   // Якщо значення знайдено, повертаємо рядок Множина має значення "${value}" типу "${typeof value}".
   // Якщо значення не знайдено, повертаємо рядок Множина не має значення "${value}".
+  if (mySet.has(value)) {
+    return `Множина має значення "${value}" типу "${typeof value}"`;
+  } 
+  else {
+    return `Множина не має значення "${value}"`;
+  }
 }
 // Приклад використання функції checkValueAndType
 console.log("Завдання: 5 ==============================");
@@ -110,6 +148,9 @@ function setToArray(mySet) {
   // Використовуємо метод filter для створення нового масиву, що містить лише рядкові елементи.
   // Використовуємо метод sort для сортування рядкових елементів в алфавітному порядку.
   // Повертаємо оброблений масив.
+  let arr = [...mySet].filter(x => typeof x === 'string');
+  arr.sort();
+  return arr;
 }
 
 // Приклад використання функції setToArray
@@ -131,6 +172,18 @@ function removeDuplicatesInPlace(arr) {
   // Зменшуємо лічильник, оскільки масив став коротшим
   // Додаємо унікальний елемент до множини
   // Повертаємо множину
+  let set = new Set();
+  for (let i = 0; i < arr.length; i++) {
+    if (set.has(arr[i])) {
+      delete arr[i];
+      // i--;
+    }
+    else {
+      set.add(arr[i]);
+    }
+  }
+  
+  return set;
 }
 
 // Приклад використання функції removeDuplicatesInPlace
@@ -151,6 +204,14 @@ function areDisjoint(set1, set2) {
   // Перебираємо першу множину за допомогою оператору for of
   // Якщо знайдено спільний елемент з другою множиною,використовуємо метод has, повертаємо false
   //Якщо немає  спільних елементів повертаємо true
+  let result = true;
+  for (let item of set1) {
+    if (set2.has(item)) {
+      result = false;
+    }
+  }
+
+  return result;
 }
 
 // Приклад використання функції areDisjoint
@@ -171,6 +232,14 @@ function getDifference(set1, set2) {
   // Перебір елементів першої множини за допомогою оператору for of
   // Якщо елемент не належить другій множині, додаємо його до differenceSet
   // Повертаємо множину differenceSet з різницею елементів
+  let differenceSet = new Set();
+  for (let item of set1) {
+    if (!set2.has(item)) {
+      differenceSet.add(item);
+    }
+  }
+
+  return differenceSet;
 }
 
 // Приклад використання функції getDifference
@@ -193,6 +262,16 @@ function getIntersection(arr1, arr2) {
   // Перевірка, чи елемент є спільним у другій множині
   // Додавання спільного елементу до множини intersectionSet
   // Повертаємо множину intersectionSet
+  let set1 = new Set(arr1);
+  let set2 = new Set(arr2);
+  let intersectionSet = new Set();
+  for (let item of set1) {
+    if (set2.has(item)) {
+      intersectionSet.add(item);
+    }
+  }
+
+  return intersectionSet;  
 }
 
 // Приклад використання функції getIntersection
@@ -216,6 +295,20 @@ function iterateSet(set) {
   // Використовуємо методу entries для отримання ітератора записів
   // Використовуємо for...of для кожного запису з ітератора entries
   // Виведення запису у консоль
+  let iterKeys = set.keys();
+  for (let itemKey of iterKeys) {
+    console.log(itemKey);
+  }
+
+  let iterValues = set.values();
+  for (let itemValue of iterValues) {
+    console.log(itemValue);
+  }
+
+  let iterEntries = set.entries();
+  for (let iterEntrie of iterEntries) {
+    console.log(iterEntrie);
+  }
 }
 
 // Приклад використання функції iterateSet
@@ -244,6 +337,9 @@ function sumNumbers(set) {
   // Перевірка, чи є елемент числом
   // Додавання числового елемента до суми
   // Повертаємо суму
+  let sum = 0;
+  set.forEach(x => sum += (typeof x === 'number') ? x : 0);
+
   return sum;
 }
 
